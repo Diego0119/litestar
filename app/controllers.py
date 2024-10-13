@@ -217,3 +217,13 @@ class CategoryController(Controller):
             raise NotFoundException(
                 detail=f"Categoría con id={category_id} no encontrada"
             )
+
+class CommentController(Controller):
+    path = "/comments"
+    tags = ["comments"]
+    dependencies = {"comment_repo": Provide(provide_comment_repo)}
+    return_dto = CommentDTO
+
+    @get("/")
+    async def list_comments(self, comment_repo: CommentRepository) -> Sequence[Comment]:
+        return comment_repo.list()
