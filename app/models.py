@@ -14,6 +14,7 @@ class User(Base):
     fullname: Mapped[str]
 
     items: Mapped[list["TodoItem"]] = relationship(back_populates="assigned_to")
+    comments = relationship("Comment", back_populates="user")
 
     def __repr__(self) -> str:
         return f"<User(id={self.id},username={self.username},fullname={self.fullname})>"
@@ -31,6 +32,7 @@ class TodoItem(Base):
     categories: Mapped[list["Category"]] = relationship(
         back_populates="items", secondary="items_categories"
     )
+    comments = relationship("Comment", back_populates="todo_item")
 
     def __repr__(self) -> str:
         return f"<TodoItem(id={self.id},title={self.title},done={self.done})>"
