@@ -49,3 +49,13 @@ class CategoryCreateDTO(SQLAlchemyDTO[Category]):
 
 class CategoryUpdateDTO(SQLAlchemyDTO[Category]):
     config = SQLAlchemyDTOConfig(exclude={"id", "items"}, partial=True)
+
+
+class CommentDTO(SQLAlchemyDTO[Comment]):
+    pass
+
+class CommentCreateDTO(SQLAlchemyDTO[Comment]):
+    config = SQLAlchemyDTOConfig(exclude={"id", "user", "todo_item"})
+
+class CommentUpdateDTO(SQLAlchemyDTO[Comment]):
+    config = SQLAlchemyDTOConfig(exclude={"id", "user", "todo_item"}, partial=True)
