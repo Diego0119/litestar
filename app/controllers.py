@@ -227,3 +227,34 @@ class CommentController(Controller):
     @get("/")
     async def list_comments(self, comment_repo: CommentRepository) -> Sequence[Comment]:
         return comment_repo.list()
+
+        
+    @get("/{comment_id:int}")
+    async def get_comment(self, comment_repo: CommentRepository, comment_id: int) -> Comment:
+        try:
+            return comment_repo.get(comment_id)
+        except NotFoundError:
+            raise NotFoundException(detail=f"Comentario con id={comment_id} no encontrado")
+
+    @post("/", dto=CommentCreateDTO)
+    async def create_comment(self, comment_repo: CommentRepository, data: Comment) -> Comment:
+        return comment_repo.add(data)
+
+    @patch("/{comment_id:int}", dto=CommentUpdateDTO)
+    async def patch_comment(
+        self, comment_repo: CommentRepository, comment_id: int, data: DTOData[Comment]
+    ) -> Comment:
+        try:
+            comment, _ = comment_repo.get_and_update(
+                id=comment_id, **data.as_builtins(), match_fields=["id"]
+            )
+            return comment
+        except NotFoundError:
+            raise NotFoundException(detail=f"Comentario con id={comment_id} no encontrado")
+
+    @delete("/{comment_id:int}")
+    async def delete_comment(self, comment_repo: CommentRepository, comment_id: int) -> None:
+        try:
+            comment_repo.delete(comment_id)
+        except NotFoundError:
+            raise NotFoundException(detail=f"Comentario con id={comment_id} no encontrado")
