@@ -57,3 +57,13 @@ class ItemCategory(Base):
     category_id: Mapped[int] = mapped_column(
         ForeignKey("categories.id"), primary_key=True
     )
+
+class Comment(Base):
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True, index=True)
+    content = Column(Text, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    todo_item_id = Column(Integer, ForeignKey('todo_items.id'), nullable=False)
+    user = relationship("User", back_populates="comments")
+    todo_item = relationship("TodoItem", back_populates="comments")
