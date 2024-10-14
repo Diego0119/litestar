@@ -3,7 +3,7 @@ from advanced_alchemy.repository import SQLAlchemySyncRepository
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.models import Category, TodoItem, User
+from app.models import Category, TodoItem, User, Comment
 
 
 class TodoItemRepository(SQLAlchemySyncRepository[TodoItem]):  # type: ignore
@@ -31,3 +31,9 @@ class CategoryRepository(SQLAlchemySyncRepository[Category]):  # type: ignore
 
 async def provide_category_repo(db_session: Session) -> CategoryRepository:
     return CategoryRepository(session=db_session)
+
+class CommentRepository(SQLAlchemySyncRepository[Comment]):  # type: ignore
+    model_type = Comment
+    
+async def provide_comment_repo(db_session: Session) -> CommentRepository:
+    return CommentRepository(session=db_session)
